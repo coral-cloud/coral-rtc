@@ -10,7 +10,7 @@ const ioServer = require('socket.io');
 const RTCMultiConnectionServer = require('rtcmulticonnection-server');
 
 var PORT = 9001;
-var isUseHTTPs = false;
+var isUseHTTPs = true;
 
 const jsonPath = {
     config: 'config.json',
@@ -85,7 +85,7 @@ function serverHandler(request, response) {
         }
 
         var matched = false;
-        ['/demos/', '/dev/', '/dist/', '/socket.io/', '/node_modules/canvas-designer/', '/admin/'].forEach(function(item) {
+        ['/apps/', '/dev/', '/dist/', '/socket.io/', '/node_modules/canvas-designer/', '/admin/'].forEach(function(item) {
             if (filename.indexOf(resolveURL(item)) !== -1) {
                 matched = true;
             }
@@ -126,12 +126,12 @@ function serverHandler(request, response) {
         try {
             stats = fs.lstatSync(filename);
 
-            if (filename.search(/demos/g) === -1 && filename.search(/admin/g) === -1 && stats.isDirectory() && config.homePage === '/demos/index.html') {
+            if (filename.search(/apps/g) === -1 && filename.search(/admin/g) === -1 && stats.isDirectory() && config.homePage === '/apps/index.html') {
                 if (response.redirect) {
-                    response.redirect('/demos/');
+                    response.redirect('/apps/');
                 } else {
                     response.writeHead(301, {
-                        'Location': '/demos/'
+                        'Location': '/apps/'
                     });
                 }
                 response.end();
@@ -152,22 +152,22 @@ function serverHandler(request, response) {
                     'Content-Type': 'text/html'
                 });
 
-                if (filename.indexOf(resolveURL('/demos/MultiRTC/')) !== -1) {
-                    filename = filename.replace(resolveURL('/demos/MultiRTC/'), '');
-                    filename += resolveURL('/demos/MultiRTC/index.html');
+                if (filename.indexOf(resolveURL('/apps/MultiRTC/')) !== -1) {
+                    filename = filename.replace(resolveURL('/apps/MultiRTC/'), '');
+                    filename += resolveURL('/apps/MultiRTC/index.html');
                 } else if (filename.indexOf(resolveURL('/admin/')) !== -1) {
                     filename = filename.replace(resolveURL('/admin/'), '');
                     filename += resolveURL('/admin/index.html');
-                } else if (filename.indexOf(resolveURL('/demos/dashboard/')) !== -1) {
-                    filename = filename.replace(resolveURL('/demos/dashboard/'), '');
-                    filename += resolveURL('/demos/dashboard/index.html');
-                } else if (filename.indexOf(resolveURL('/demos/video-conference/')) !== -1) {
-                    filename = filename.replace(resolveURL('/demos/video-conference/'), '');
-                    filename += resolveURL('/demos/video-conference/index.html');
-                } else if (filename.indexOf(resolveURL('/demos')) !== -1) {
-                    filename = filename.replace(resolveURL('/demos/'), '');
-                    filename = filename.replace(resolveURL('/demos'), '');
-                    filename += resolveURL('/demos/index.html');
+                } else if (filename.indexOf(resolveURL('/apps/dashboard/')) !== -1) {
+                    filename = filename.replace(resolveURL('/apps/dashboard/'), '');
+                    filename += resolveURL('/apps/dashboard/index.html');
+                } else if (filename.indexOf(resolveURL('/apps/video-conference/')) !== -1) {
+                    filename = filename.replace(resolveURL('/apps/video-conference/'), '');
+                    filename += resolveURL('/apps/video-conference/index.html');
+                } else if (filename.indexOf(resolveURL('/apps')) !== -1) {
+                    filename = filename.replace(resolveURL('/apps/'), '');
+                    filename = filename.replace(resolveURL('/apps'), '');
+                    filename += resolveURL('/apps/index.html');
                 } else {
                     filename += resolveURL(config.homePage);
                 }

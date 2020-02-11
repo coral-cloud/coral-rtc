@@ -1,4 +1,4 @@
-You can test all demos LIVE here:
+You can test all apps LIVE here:
 
 * https://rtcmulticonnection.herokuapp.com/
 

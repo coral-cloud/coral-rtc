@@ -2,22 +2,22 @@
 <html lang="en" dir="ltr">
 <head>
   <meta charset="utf-8">
-  <title>Vuejs Video Conferencing using RTCMultiConnection</title>
+  <title>Audio Conferencing using RTCMultiConnection</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <link rel="shortcut icon" href="/demos/logo.png">
-  <link rel="stylesheet" href="/demos/stylesheet.css">
-  <script src="/demos/menu.js"></script>
+  <link rel="shortcut icon" href="/apps/logo.png">
+  <link rel="stylesheet" href="/apps/stylesheet.css">
+  <script src="/apps/menu.js"></script>
 </head>
 <body>
   <header>
-    <a class="logo" href="/"><img src="/demos/logo.png" alt="RTCMultiConnection"></a>
-    <a href="/" class="menu-explorer">Menu<img src="/demos/menu-icon.png" alt="Menu"></a>
+    <a class="logo" href="/"><img src="/apps/logo.png" alt="RTCMultiConnection"></a>
+    <a href="/" class="menu-explorer">Menu<img src="/apps/menu-icon.png" alt="Menu"></a>
     <nav>
       <li>
         <a href="/">Home</a>
       </li>
       <li>
-        <a href="/demos/">Demos</a>
+        <a href="/apps/">apps</a>
       </li>
       <li>
         <a href="https://www.rtcmulticonnection.org/docs/getting-started/">Getting Started</a>
@@ -38,9 +38,9 @@
   </header>
 
   <h1>
-    Vuejs Video Conferencing using RTCMultiConnection
+    Audio Conferencing using RTCMultiConnection
     <p class="no-mobile">
-      Multi-user (many-to-many) video chat using mesh networking model.
+      Multi-user (many-to-many) audio-calling using mesh networking model.
     </p>
   </h1>
 
@@ -50,21 +50,17 @@
     <button id="join-room">Join Room</button>
     <button id="open-or-join-room">Auto Open Or Join Room</button>
 
-    <div id="vue-app">
-      <todo-item
-          v-for="item in videosList"
-          v-bind:todo="item"
-          v-bind:key="item.id">
-      </todo-item>
-    </div>
-
     <div id="room-urls" style="text-align: center;display: none;background: #F1EDED;margin: 15px -10px;border: 1px solid rgb(189, 189, 189);border-left: 0;border-right: 0;"></div>
+
+    <div id="audios-container"></div>
   </section>
 
 <script src="/dist/RTCMultiConnection.min.js"></script>
 <script src="/node_modules/webrtc-adapter/out/adapter.js"></script>
 <script src="/socket.io/socket.io.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<link rel="stylesheet" href="/dev/getHTMLMediaElement.css">
+<script src="/dev/getHTMLMediaElement.js"></script>
 <script>
 // ......................................................
 // .......................UI Code........................
@@ -84,8 +80,7 @@ document.getElementById('join-room').onclick = function() {
 document.getElementById('open-or-join-room').onclick = function() {
     disableInputButtons();
     connection.openOrJoin(document.getElementById('room-id').value, function(isRoomExist, roomid) {
-        if (isRoomExist === false && connection.isInitiator === true) {
-            // if room doesn't exist, it means that current user will create the room
+        if (!isRoomExist) {
             showRoomURL(roomid);
         }
     });
@@ -103,16 +98,21 @@ connection.socketURL = '/';
 // comment-out below line if you do not have your own socket.io server
 // connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
 
-connection.socketMessageEvent = 'video-conference-demo';
+connection.socketMessageEvent = 'audio-conference-demo';
 
 connection.session = {
     audio: true,
-    video: true
+    video: false
+};
+
+connection.mediaConstraints = {
+    audio: true,
+    video: false
 };
 
 connection.sdpConstraints.mandatory = {
     OfferToReceiveAudio: true,
-    OfferToReceiveVideo: true
+    OfferToReceiveVideo: false
 };
 
 // https://www.rtcmulticonnection.org/docs/iceServers/
@@ -126,44 +126,33 @@ connection.iceServers = [{
     ]
 }];
 
-Vue.component('todo-item', {
-  props: ['todo'],
-  template: '<video controls autoplay playsinline :srcObject.prop="todo.srcObject" :muted="todo.muted" :id="todo.id"></video>'
-})
-
-var vueApp = new Vue({
-  el: '#vue-app',
-  data: {
-    videosList: []
-  }
-})
-
-connection.autoCreateMediaElement = false;
+connection.audiosContainer = document.getElementById('audios-container');
 connection.onstream = function(event) {
-    vueApp.videosList.push({
-        id: event.streamid,
-        srcObject: event.stream,
-        muted: event.type === 'local'
+    var width = parseInt(connection.audiosContainer.clientWidth / 2) - 20;
+    var mediaElement = getHTMLMediaElement(event.mediaElement, {
+        title: event.userid,
+        buttons: ['full-screen'],
+        width: width,
+        showOnMouseEnter: false
     });
+
+    connection.audiosContainer.appendChild(mediaElement);
+
+    setTimeout(function() {
+        mediaElement.media.play();
+    }, 5000);
+
+    mediaElement.id = event.streamid;
 };
 
 connection.onstreamended = function(event) {
-    var newList = [];
-    vueApp.videosList.forEach(function(item) {
-        if(item.id !== event.streamid) {
-            newList.push(item);
-        }
-    });
-    vueApp.videosList = newList;
+    var mediaElement = document.getElementById(event.streamid);
+    if (mediaElement) {
+        mediaElement.parentNode.removeChild(mediaElement);
+    }
 };
 
-// ..................................
-// ALL below scripts are redundant!!!
-// ..................................
-
 function disableInputButtons() {
-    document.getElementById('room-id').onkeyup();
-
     document.getElementById('open-or-join-room').disabled = true;
     document.getElementById('open-room').disabled = true;
     document.getElementById('join-room').disabled = true;
@@ -211,7 +200,7 @@ if (localStorage.getItem(connection.socketMessageEvent)) {
 }
 document.getElementById('room-id').value = roomid;
 document.getElementById('room-id').onkeyup = function() {
-    localStorage.setItem(connection.socketMessageEvent, document.getElementById('room-id').value);
+    localStorage.setItem(connection.socketMessageEvent, this.value);
 };
 
 var hashString = location.hash.replace('#', '');
@@ -241,13 +230,6 @@ if (roomid && roomid.length) {
     })();
 
     disableInputButtons();
-}
-
-// detect 2G
-if(navigator.connection &&
-   navigator.connection.type === 'cellular' &&
-   navigator.connection.downlinkMax <= 0.115) {
-  alert('2G is not supported. Please use a better internet service.');
 }
 </script>
 

@@ -12,7 +12,7 @@ Signaling server has a separate repository:
 
 * https://github.com/muaz-khan/RTCMultiConnection-Server
 
-## Demos
+## apps
 
 * https://rtcmulticonnection.herokuapp.com/
 

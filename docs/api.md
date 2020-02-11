@@ -11,7 +11,7 @@ You can search docs/APIs here:
 
 1. You can run nodejs on a separate domain or separate port or on a separate server
 2. You can set `socketURL="ip-address"` to link nodejs server
-3. Now you can run RTCMultiConnection demos on any webpage; whether it is PHP page, ASP.net page, python or ruby page or whatever framework running top over HTML.
+3. Now you can run RTCMultiConnection apps on any webpage; whether it is PHP page, ASP.net page, python or ruby page or whatever framework running top over HTML.
 
 ```javascript
 connection.socketURL = 'https://onlyChangingPort.com:8888/';
@@ -500,8 +500,8 @@ Please check [`FirebaseConnection`](https://github.com/muaz-khan/RTCMultiConnect
 
 For more information:
 
-* https://rtcmulticonnection.herokuapp.com/demos/Audio+Video+TextChat+FileSharing.html#comment-2670178473
-* https://rtcmulticonnection.herokuapp.com/demos/Audio+Video+TextChat+FileSharing.html#comment-2670182313
+* https://rtcmulticonnection.herokuapp.com/apps/Audio+Video+TextChat+FileSharing.html#comment-2670178473
+* https://rtcmulticonnection.herokuapp.com/apps/Audio+Video+TextChat+FileSharing.html#comment-2670182313
 
 ## `enableLogs`
 
@@ -1157,14 +1157,14 @@ connection.enableScalableBroadcast = true; // by default, it is false.
 connection.singleBroadcastAttendees = 3;   // how many users are handled by each broadcaster
 ```
 
-Live Demos:
+Live apps:
 
 | DemoTitle        | TestLive           | ViewSource |
 | ------------- |-------------|-------------|
-| Scalable Audio/Video Broadcast | [Demo](https://rtcmulticonnection.herokuapp.com/demos/Scalable-Broadcast.html) | [Source](https://github.com/muaz-khan/RTCMultiConnection/tree/master/demos/Scalable-Broadcast.html) |
-| Scalable Screen Broadcast | [Demo](https://rtcmulticonnection.herokuapp.com/demos/Scalable-Screen-Broadcast.html) | [Source](https://github.com/muaz-khan/RTCMultiConnection/tree/master/demos/Scalable-Screen-Broadcast.html) |
-| Scalable Video Broadcast | [Demo](https://rtcmulticonnection.herokuapp.com/demos/Video-Scalable-Broadcast.html) | [Source](https://github.com/muaz-khan/RTCMultiConnection/tree/master/demos/Video-Scalable-Broadcast.html) |
-| Scalable File Sharing | [Demo](https://rtcmulticonnection.herokuapp.com/demos/Files-Scalable-Broadcast.html) | [Source](https://github.com/muaz-khan/RTCMultiConnection/tree/master/demos/Files-Scalable-Broadcast.html) |
+| Scalable Audio/Video Broadcast | [Demo](https://rtcmulticonnection.herokuapp.com/apps/Scalable-Broadcast.html) | [Source](https://github.com/muaz-khan/RTCMultiConnection/tree/master/apps/Scalable-Broadcast.html) |
+| Scalable Screen Broadcast | [Demo](https://rtcmulticonnection.herokuapp.com/apps/Scalable-Screen-Broadcast.html) | [Source](https://github.com/muaz-khan/RTCMultiConnection/tree/master/apps/Scalable-Screen-Broadcast.html) |
+| Scalable Video Broadcast | [Demo](https://rtcmulticonnection.herokuapp.com/apps/Video-Scalable-Broadcast.html) | [Source](https://github.com/muaz-khan/RTCMultiConnection/tree/master/apps/Video-Scalable-Broadcast.html) |
+| Scalable File Sharing | [Demo](https://rtcmulticonnection.herokuapp.com/apps/Files-Scalable-Broadcast.html) | [Source](https://github.com/muaz-khan/RTCMultiConnection/tree/master/apps/Files-Scalable-Broadcast.html) |
 
 ## `onNumberOfBroadcastViewersUpdated`
 
@@ -1393,7 +1393,7 @@ connection.onstream = function(event) {
 </script>
 ```
 
-Demo: https://rtcmulticonnection.herokuapp.com/demos/StreamHasData.html
+Demo: https://rtcmulticonnection.herokuapp.com/apps/StreamHasData.html
 
 ## File Sharing
 

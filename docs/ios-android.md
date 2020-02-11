@@ -4,7 +4,7 @@
 > 
 > So you do not need to build a cordova or ionic application.
 
-Here is list of all cordova/iosnic demos: 
+Here is list of all cordova/iosnic apps: 
 
 * https://github.com/muaz-khan/cordova-mobile-apps
 
@@ -19,9 +19,9 @@ Please check these docs as well:
 
 > This page explains how to write iOS+Android phonegap/cordova applications for RTCMultiConnection.
 
-# Cordova Demos
+# Cordova apps
 
-Please check all iOS+Android demos here:
+Please check all iOS+Android apps here:
 
 * https://webrtcweb.com/cordova-apps/
 
